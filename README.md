@@ -32,17 +32,19 @@ To use OpenBB LLM Agents with OpenAI, you need an OpenAI API key. Follow these s
 1. Run an ollama server
 ```sh
 OLLAMA_CONTEXT_LENGTH=8096 ollama serve
+# You may need to `systemctl stop ollama` to stop an already running ollama server
+# You also will need to set OLLAMA_CONTEXT_LENGTH based off of your GPU's memory
 # Look for this in the output
 # OLLAMA_HOST:http://127.0.0.1:11434
 ```
-2. Download the ollama model (Ex: `qwq`)
+2. Download the ollama model depending on your GPU (Ex: `llama3.2:1b`). Note the model must support tools and embeddings
 ```sh
-ollama pull qwq
+ollama pull llama3.2:1b
 ```
 
 3. Run your script
 ```sh
-OPENAI_API_KEY=none CHAT_MODEL=qwq CHAT_MODEL_BASE_URL=http://127.0.0.1:11434 poetry run python run.py "What is the price of AAPL?"
+OPENAI_API_KEY=none CHAT_MODEL="llama3.2:1b" CHAT_MODEL_BASE_URL=http://127.0.0.1:11434/v1 OLLAMA_EMBEDDING_MODEL="llama3.2:1b" poetry run python run.py "What is the price of AAPL?"
 ```
 
 ### OpenBB Platform data provider credentials
