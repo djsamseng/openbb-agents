@@ -17,15 +17,33 @@ pip install openbb-agents --upgrade
 ```
 
 ## Setup
-### OpenAI API keys
+### Option 1: Using OpenAI API keys
 
-To use OpenBB LLM Agents, you need an OpenAI API key. Follow these steps:
+To use OpenBB LLM Agents with OpenAI, you need an OpenAI API key. Follow these steps:
 
 1. **Get API Key**: Sign up on [OpenAI](https://www.openai.com/) and get your API key.
 2. **Set Environment Variable**: Add this to your shell profile (`.bashrc`, `.zshrc`, etc.):
     ```sh
     export OPENAI_API_KEY="your_openai_api_key"
     ```
+
+### Option 2: Using a local LLM with [ollama](https://ollama.com/)
+
+1. Run an ollama server
+```sh
+OLLAMA_CONTEXT_LENGTH=8096 ollama serve
+# Look for this in the output
+# OLLAMA_HOST:http://127.0.0.1:11434
+```
+2. Download the ollama model (Ex: `qwq`)
+```sh
+ollama pull qwq
+```
+
+3. Run your script
+```sh
+OPENAI_API_KEY=none CHAT_MODEL=qwq CHAT_MODEL_BASE_URL=http://127.0.0.1:11434 poetry run python run.py "What is the price of AAPL?"
+```
 
 ### OpenBB Platform data provider credentials
 To use the OpenBB Platform functions, you need to configure the necessary [data provider API credentials](https://docs.openbb.co/platform/usage/api_keys). This can be done in one of two ways:
@@ -100,7 +118,7 @@ Or format the code:
 ruff format
 ```
 
-We've also included these in the `pre-commit`, if you'd prefer to have these checks run automatically before commiting code. 
+We've also included these in the `pre-commit`, if you'd prefer to have these checks run automatically before commiting code.
 You can install the `pre-commit` hooks as follows:
 
 ``` sh
@@ -112,4 +130,3 @@ We use `pytest` as our test runner:
 ``` sh
 pytest -n 8 tests/
 ```
-
